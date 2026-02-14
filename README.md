@@ -15,10 +15,10 @@ This repository contains a straightforward full-stack todo application built wit
 
 ## Installation
 
-Install MongoDb Database
+Install MongoDb Databases
 
 ```bash
-git clone https://github.com/jahidhiron/todo-app.git
+git clone https://github.com/abhijeetpatel-06/todo-app.git
 cd todo-app
 npm install
 ```
