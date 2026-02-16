@@ -8,13 +8,13 @@ const dotenv = require("dotenv");
 // environment variable
 dotenv.config();
 
-// init app
+// init app server
 const app = express();
 
 // mongodb connection
 connectMongodb();
 
-// view engine
+// view engine setup
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
