@@ -9,7 +9,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/yourusername/node-mvc-app.git'
+                git 'https://github.com/abhijeetpatel-06/todo-app'
             }
         }
 
