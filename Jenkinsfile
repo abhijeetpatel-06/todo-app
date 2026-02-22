@@ -1,40 +1,74 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "node18"   // configure in Jenkins global tools
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+
+    environment {
+        APP_DIR = "/var/www/nodeapp"
+        REPO_URL = "https://github.com/abhijeetpatel-06/todo-app.git"
     }
 
     stages {
 
-        stage('Checkout') {
+        stage('Check Node.js & npm') {
             steps {
-                git 'https://github.com/abhijeetpatel-06/todo-app'
+                sh '''
+                echo "Checking Node.js..."
+                node -v
+
+                echo "Checking npm..."
+                npm -v
+                '''
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
+        stage('Check MongoDB on Deploy Server') {
+    steps {
+        sh """
+        ssh root@139.59.93.202 '
+            echo "Checking MongoDB version..."
+            mongod --version || { echo "MongoDB not installed"; exit 1; }
 
-        stage('Build') {
-            steps {
-                sh 'echo "Build step - Node app does not need compilation"'
-            }
-        }
+            echo "Checking MongoDB service..."
+            systemctl is-active mongod || systemctl is-active mongodb
 
-        stage('Test') {
-            steps {
-                sh 'npm test || echo "No tests defined"'
-            }
-        }
+            echo "Waiting for MongoDB port..."
+            timeout 60 bash -c "until nc -z localhost 27017; do sleep 3; done"
 
-        stage('Start Application') {
-            steps {
-                sh 'npm start &'
+            echo "MongoDB is running"
+        '
+        """
             }
+    }
+
+     stage('Check PM2 on Deploy Server') {
+    steps {
+        sh """
+        ssh root@139.59.93.202 '
+            echo "Checking PM2 version..."
+            pm2 -v || { echo "PM2 not installed"; exit 1; }
+        '
+        """
         }
+    }
+
+     stage('Deploy to Server') {
+    steps {
+        sh """
+        ssh root@139.59.93.202 '
+            rm -rf /var/www/nodeapp
+            git clone https://github.com/abhijeetpatel-06/todo-app.git /var/www/nodeapp
+            cd /var/www/nodeapp
+            npm install
+            pm2 stop nodeapp || true
+            pm2 delete nodeapp || true
+            pm2 start index.js --name nodeapp
+        '
+        """
+             }
+         }
     }
 }
