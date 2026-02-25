@@ -1,48 +1,33 @@
 <%- include("partials/header") %>
-    <div class="table-container">
-      <h2 class="todo-title">Add Your Todo</h2>
 
-      <div>
-        <a class="btn" href="/">Back</a>
+<div class="form-wrapper">
+  <h2 class="page-title">➕ Add New Task</h2>
 
-        <form action="/add-todo" method="post">
-          <div c<%- include("partials/header") %>
+  <a href="/" class="back-btn">← Back</a>
 
-<h2 class="page-title">➕ Add New Task</h2>
-
-<form action="/add-todo" method="POST" class="form-card">
-    <input type="text" name="title" placeholder="Task Title" required>
-    <textarea name="desc" placeholder="Task Description (optional)"></textarea>
-
-    <button type="submit" class="btn primary">Create Task</button>
-</form>
-
-<%- include("partials/footer") %>lass="new-todo">
-            <div class="form-group">
-              <label for="title" class="text-light">Title</label>
-              <input
-                type="text"
-                name="title"
-                value=""
-                placeholder="Type todo here"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="desc" class="text-light">Description</label>
-              <input
-                type="text"
-                name="desc"
-                value=""
-                placeholder="Type description here"
-              />
-            </div>
-
-            <div class="form-group">
-              <button type="submit" class="btn">Save</button>
-            </div>
-          </div>
-        </form>
-      </div>
+  <form action="/add-todo" method="POST" class="form-card">
+    <div class="form-group">
+      <label>Title</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="Type todo here"
+        required
+      />
     </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        name="desc"
+        placeholder="Type description here"
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn primary-btn">
+      Save Task
+    </button>
+  </form>
+</div>
+
 <%- include("partials/footer") %>
