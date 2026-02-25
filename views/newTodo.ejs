@@ -6,7 +6,18 @@
         <a class="btn" href="/">Back</a>
 
         <form action="/add-todo" method="post">
-          <div class="new-todo">
+          <div c<%- include("partials/header") %>
+
+<h2 class="page-title">➕ Add New Task</h2>
+
+<form action="/add-todo" method="POST" class="form-card">
+    <input type="text" name="title" placeholder="Task Title" required>
+    <textarea name="desc" placeholder="Task Description (optional)"></textarea>
+
+    <button type="submit" class="btn primary">Create Task</button>
+</form>
+
+<%- include("partials/footer") %>lass="new-todo">
             <div class="form-group">
               <label for="title" class="text-light">Title</label>
               <input
