@@ -8,7 +8,7 @@
             <div class="card-header">
                 <h3><%= todo.title %></h3>
                 <span class="date">
-                    <%= moment(todo.createdAt).format("DD MMM YYYY, hh:mm A") %>
+                    <%= moment(todo.createdAt).local().format("DD MMM YYYY, hh:mm A") %>
                 </span>
             </div>
 
