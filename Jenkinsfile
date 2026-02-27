@@ -18,6 +18,38 @@ pipeline {
             steps {
                 sh """
                 ssh ${SERVER} '
+                    
+                    echo "===== CHECKING MONGODB ====="
+
+                    # Check if mongod exists
+                    if ! command -v mongod > /dev/null; then
+                        echo "MongoDB not installed. Installing MongoDB..."
+
+                        apt update -y
+                        apt install -y gnupg curl
+
+                        curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
+                        gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
+                        --dearmor
+
+                        echo "deb [ arch=amd64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] \
+                        https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | \
+                        tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+                        apt update -y
+                        apt install -y mongodb-org
+                    else
+                        echo "MongoDB already installed."
+                    fi
+
+                    # Start and enable MongoDB
+                    systemctl start mongod
+                    systemctl enable mongod
+
+                    systemctl status mongod --no-pager
+
+                    echo "===== MONGODB READY ====="
+
                     # If app directory does not exist → clone
                     if [ ! -d "${APP_DIR}" ]; then
                         git clone ${REPO_URL} ${APP_DIR}
