@@ -9,7 +9,7 @@ pipeline {
     environment {
         APP_DIR = "/var/www/nodeapp"
         REPO_URL = "https://github.com/abhijeetpatel-06/todo-app.git"
-        SERVER = "root@138.197.91.45"
+        SERVER = "root@138.197.91.45" # you can also change the ip address to your server
     }
 
     stages {
